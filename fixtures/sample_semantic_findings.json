@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0.0",
+  "skill_id": "prd-quality-review",
+  "doc_type": "prd",
+  "doc_path": "fixtures/sample_prd.md",
+  "score_config_version": "1.0.0",
+  "findings": [
+    {
+      "id": "PRD-001",
+      "severity": "P1",
+      "category": "acceptance",
+      "location": "验收标准 / AC-1",
+      "problem": "「2 秒内」未说明测量环境与百分位",
+      "impact": "性能验收可能争议",
+      "recommendation": "改为 P95 < 2s（预发环境、给定并发）",
+      "blocking": false,
+      "evidence_type": "inference",
+      "lenses": ["qa"]
+    }
+  ],
+  "open_questions": [
+    "锁定策略是否计入登录成功率分母？"
+  ],
+  "summary": "mock semantic findings for demo"
+}
