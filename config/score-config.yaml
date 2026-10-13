@@ -1,0 +1,95 @@
+# AI Doc Quality Skills — 评分与门禁配置
+# 变更必须递增 version；报告中回写 score_config_version
+
+version: "1.0.0"
+
+verdicts:
+  - PASS
+  - PASS_WITH_RISKS
+  - NEEDS_WORK
+  - REJECT
+
+# 任意 blocking=true 或 P0 时，orchestrator 不得给出 PASS
+gate:
+  reject_on_p0: true
+  max_p1_for_pass_with_risks: 5
+  min_overall_score_for_pass: 80
+  min_overall_score_for_pass_with_risks: 65
+
+severity:
+  P0:
+    blocking: true
+    description: "安全、数据一致性、关键业务规则、需求无设计映射等致命项"
+  P1:
+    blocking: false
+    description: "显著影响可实现性或可测试性，应在进入下一阶段前修复"
+  P2:
+    blocking: false
+    description: "质量与完整性缺口，可排期修复"
+  P3:
+    blocking: false
+    description: "优化与文案级建议"
+
+# 按文档类型的维度权重（总和应为 100）
+dimensions:
+  prd:
+    clarity_precision: 25
+    completeness: 25
+    acceptance_quality: 20
+    consistency: 15
+    scope_dependencies: 15
+  design:
+    req_alignment: 20
+    architecture_boundaries: 15
+    data_design: 15
+    api_contract: 15
+    security_authz: 10
+    reliability_concurrency: 10
+    observability: 5
+    implementability_testability: 10
+  test:
+    coverage_mapping: 30
+    assertion_decidability: 25
+    edge_and_negative: 20
+    data_and_env: 15
+    nfr_scenarios: 10
+
+# 结构规则：失败且 blocking 的项按 P0 计入门禁
+structure_rules:
+  prd_required_sections:
+    - 问题与背景
+    - 目标与成功指标
+    - 范围
+    - 用户故事或功能需求
+    - 验收标准
+  design_required_sections:
+    - 架构与边界
+    - 数据设计
+    - 接口或契约
+    - 异常与可靠性
+  test_required_sections:
+    - 测试范围
+    - 用例或场景列表
+    - 验收映射或覆盖说明
+
+# 默认 P0 规则（语义 Skill 应优先检查）
+default_p0_rules:
+  - id: REQ_NO_DESIGN
+    description: "核心需求无设计映射"
+  - id: STATE_MACHINE_OPEN
+    description: "状态机不闭合"
+  - id: MULTI_ROLE_NO_AUTHZ
+    description: "多角色但无授权模型"
+  - id: WRITE_NO_IDEMPOTENCY
+    description: "核心写路径无幂等定义"
+  - id: ACCEPTANCE_UNTESTABLE
+    description: "关键验收标准不可判定"
+
+report:
+  formats:
+    - json
+    - markdown
+    - html
+  include_radar: true
+  include_top_fixes: 10
+  include_revision_snippets: true

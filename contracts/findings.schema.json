@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/JustinIan-AI/ai-doc-quality-skills/contracts/findings.schema.json",
+  "title": "DocQualityFindingsBundle",
+  "description": "统一 findings 输出契约。所有语义/规则 Skill 应产出符合本 schema 的 JSON，再由 scorecard 与 orchestrator 聚合。",
+  "type": "object",
+  "required": ["schema_version", "skill_id", "doc_type", "findings"],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "skill_id": {
+      "type": "string",
+      "description": "产出该 bundle 的 Skill ID"
+    },
+    "doc_type": {
+      "type": "string",
+      "enum": ["prd", "design", "test", "bundle", "unknown"]
+    },
+    "doc_path": {
+      "type": "string",
+      "description": "被评审文档路径或逻辑名"
+    },
+    "score_config_version": {
+      "type": "string",
+      "description": "本轮使用的 score-config 版本，便于复现"
+    },
+    "checklist_version": {
+      "type": "string"
+    },
+    "findings": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/finding" }
+    },
+    "open_questions": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "无法从文档证实、需业务确认的事项"
+    },
+    "summary": {
+      "type": "string",
+      "description": "可选短摘要；不得替代 findings"
+    }
+  },
+  "$defs": {
+    "finding": {
+      "type": "object",
+      "required": [
+        "id",
+        "severity",
+        "category",
+        "location",
+        "problem",
+        "impact",
+        "recommendation",
+        "blocking",
+        "evidence_type"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "本 bundle 内稳定 ID，如 PRD-001"
+        },
+        "severity": {
+          "type": "string",
+          "enum": ["P0", "P1", "P2", "P3"]
+        },
+        "category": {
+          "type": "string",
+          "description": "如 completeness, ambiguity, acceptance, architecture, data, api, security, coverage, traceability, structure"
+        },
+        "location": {
+          "type": "string",
+          "description": "章节标题、段落锚点或表格位置；禁止仅写「全文」"
+        },
+        "problem": { "type": "string" },
+        "impact": { "type": "string" },
+        "recommendation": {
+          "type": "string",
+          "description": "可行动修改建议；优先可直接回填的文案或清单"
+        },
+        "blocking": {
+          "type": "boolean",
+          "description": "true 表示阻断门禁，通常与 P0 对齐"
+        },
+        "evidence_type": {
+          "type": "string",
+          "enum": ["fact_defect", "inference", "needs_confirmation"],
+          "description": "事实缺陷 / 合理推断 / 待确认"
+        },
+        "lenses": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "如 pm, eng, qa, structure"
+        },
+        "related_req_ids": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
