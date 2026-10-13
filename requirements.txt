@@ -1,0 +1,3 @@
+# Optional: only needed if you prefer editing score-config.yaml and loading it directly.
+# Scripts ship a stdlib JSON fallback via config/score-config.json.
+PyYAML>=6.0

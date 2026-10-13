@@ -1,0 +1,87 @@
+{
+  "version": "1.0.0",
+  "verdicts": ["PASS", "PASS_WITH_RISKS", "NEEDS_WORK", "REJECT"],
+  "gate": {
+    "reject_on_p0": true,
+    "max_p1_for_pass_with_risks": 5,
+    "min_overall_score_for_pass": 80,
+    "min_overall_score_for_pass_with_risks": 65
+  },
+  "severity": {
+    "P0": { "blocking": true },
+    "P1": { "blocking": false },
+    "P2": { "blocking": false },
+    "P3": { "blocking": false }
+  },
+  "dimensions": {
+    "prd": {
+      "clarity_precision": 25,
+      "completeness": 25,
+      "acceptance_quality": 20,
+      "consistency": 15,
+      "scope_dependencies": 15
+    },
+    "design": {
+      "req_alignment": 20,
+      "architecture_boundaries": 15,
+      "data_design": 15,
+      "api_contract": 15,
+      "security_authz": 10,
+      "reliability_concurrency": 10,
+      "observability": 5,
+      "implementability_testability": 10
+    },
+    "test": {
+      "coverage_mapping": 30,
+      "assertion_decidability": 25,
+      "edge_and_negative": 20,
+      "data_and_env": 15,
+      "nfr_scenarios": 10
+    }
+  },
+  "structure_rules": {
+    "prd_required_sections": [
+      "问题与背景",
+      "目标与成功指标",
+      "范围",
+      "用户故事或功能需求",
+      "验收标准"
+    ],
+    "design_required_sections": [
+      "架构与边界",
+      "数据设计",
+      "接口或契约",
+      "异常与可靠性"
+    ],
+    "test_required_sections": [
+      "测试范围",
+      "用例或场景列表",
+      "验收映射或覆盖说明"
+    ]
+  },
+  "section_aliases": {
+    "问题与背景": ["背景", "问题陈述", "Problem", "Background"],
+    "目标与成功指标": ["目标", "成功指标", "Goals", "Success Metrics"],
+    "范围": ["Scope", "In Scope", "范围说明"],
+    "用户故事或功能需求": ["用户故事", "功能需求", "需求列表", "User Stories", "Requirements"],
+    "验收标准": ["验收", "Acceptance Criteria", "AC"],
+    "架构与边界": ["架构", "系统架构", "Architecture"],
+    "数据设计": ["数据模型", "Data Model", "ER"],
+    "接口或契约": ["接口", "API", "API 设计"],
+    "异常与可靠性": ["异常处理", "可靠性", "Error Handling"],
+    "测试范围": ["范围", "Scope", "测试目标"],
+    "用例或场景列表": ["测试用例", "场景", "Test Cases"],
+    "验收映射或覆盖说明": ["覆盖矩阵", "需求追溯", "Coverage"]
+  },
+  "req_id_pattern": "(?:REQ|US|AC)[-_]?\\d+(?:\\.\\d+)*",
+  "deductions": {
+    "P0": 40,
+    "P1": 15,
+    "P2": 8,
+    "P3": 3
+  },
+  "report": {
+    "include_radar": true,
+    "include_top_fixes": 10
+  }
+}
